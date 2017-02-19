@@ -1,0 +1,63 @@
+template(name='home')
+    +slider
+    +call_to_action
+    +how_it_works
+    // .ui.container
+    //     .ui.basic.segment
+    //         +featured_events
+    //     .ui.basic.segment
+    //         +featured_posts
+    // +pingpong
+    // +rockstar_members
+
+
+template(name='call_to_action')
+    .call_to_action
+        .ui.very.padded.basic.inverted.attached.segment
+            .ui.stackable.container.grid
+                .ten.wide.column
+                    // h1.ui.header COME FOR COWORKING, STAY FOR COMMUNITY
+                    .large-text
+                        p Facet is great
+                .six.wide.center.aligned.column
+                    a.impact-button-light(href='/events')
+                        | Events
+                    a.impact-button-light(href='/posts')
+                        | Blog
+                    // a.impact-button-light(href='#subscribe')
+                    //     | Subscribe
+                    .ui.hidden.divider
+                    // a(href='/member_discount')
+                    //     img.ui.centered.rounded.image(src="{{c.url 'member_discount_cropped3' width=250 crop='fill'}}")
+
+
+template(name='how_it_works')
+    .ui.horizontal.divider.header How It Works
+
+
+                    
+template(name='academy_widget')
+    .ui.very.padded.basic.segment.container
+        .ui.container
+            h2.ui.make-uppercase.header HUB Academy
+                
+                
+template(name='rockstar_members')
+    .ui.attached.very.padded.basic.segment
+        .ui.container
+            h1.ui.make-uppercase.header Rockstar Members
+            .ui.four.stackable.cards
+                each rockstar_members
+                    +rockstar_member
+                    
+                    
+                    
+template(name='rockstar_member')
+    .ui.fluid.card
+        .image
+            img.ui.image(src="{{c.url profile.image_id width=200 height=200 gravity='face' crop='fill'}}")
+        .content
+            .header
+                h2.ui.header #{profile.name}
+            .description
+                // .ui.header Post Topics:

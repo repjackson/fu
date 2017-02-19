@@ -1,0 +1,8 @@
+.ui.text.container.segment
+    h2.ui.header Favorites
+    .ui.divided.vertical.list
+        each favorites
+            .item
+                a(href="/view/#{_id}") #{title} 
+                +favorite
+        
