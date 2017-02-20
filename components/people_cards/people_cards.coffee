@@ -1,4 +1,4 @@
-FlowRouter.route '/people_cards', action: (params) ->
+FlowRouter.route '/team', action: (params) ->
     BlazeLayout.render 'layout',
         main: 'people_cards'
 

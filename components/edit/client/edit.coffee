@@ -13,4 +13,4 @@ Template.edit.helpers
         
 Template.edit.events
     'click #save': ->
-        FlowRouter.go "/view/#{@_id}"
+        FlowRouter.go "/blog"
