@@ -1,8 +1,12 @@
 template(name='home')
     // +slider
+    .ui.basic.center.aligned.segment
+        .ui.big.statistic
+            .value.facet_black Facet
+            .label.large-text Enterprises
     .ui.text.container
         +team
-        +services
+        +services_card
         +clients
 
 
@@ -17,11 +21,8 @@ template(name='team')
         .item Brooke: UX/ User Experience
         .item Brian: Software Engineer
 
-template(name='services')
+template(name='services_card')
     .ui.horizontal.divider.header Services
-    .ui.statistic
-        .value.facet_black Facet
-        .label Enterprises
     .ui.list
         .item Web Design
         .item App Development

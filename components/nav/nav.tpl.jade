@@ -1,18 +1,18 @@
 .ui.inverted.stackable.menu
     .ui.container
         a.header.icon.item(href='/' class="{{isActivePath '/'}}")
-            h1.facet_black Facet
-        // a.item(href='/services' class="{{isActivePath '/services'}}") Services
+            h1.facet_black F
+        a.item(href='/services' class="{{isActivePath '/services'}}") Services
         // a.item(href='/team' class="{{isActivePath '/team'}}") Team
-        // // a.item(href='/events' class="{{isActivePath '/events'}}") Events
+        a.item(href='/events' class="{{isActivePath '/events'}}") Events
         // a.item(href='/clients' class="{{isActivePath '/clients'}}") Events
-        // a.item(href='/posts' class="{{isActivePath '/posts'}}") Blog
+        a.item(href='/posts' class="{{isActivePath '/posts'}}") Blog
         .right.menu 
-            // a.item(href='/admin/content' class="{{isActivePath '/admin/'}}")
-            //     i.configure.icon
-            //     | Admin
-            // a.item(href='/messages' class="{{isActivePath '/messages'}}")
-            //     i.mail.icon
+            a.item(href='/admin/content' class="{{isActivePath '/admin/'}}")
+                i.configure.icon
+                | Admin
+            a.item(href='/messages' class="{{isActivePath '/messages'}}")
+                i.mail.icon
             if currentUser
                 a.item(href="/account/profile/edit" class="{{isActivePath '/account/profile/edit'}}")
                     if profile_doc.image_id

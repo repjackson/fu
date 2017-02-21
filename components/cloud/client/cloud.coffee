@@ -34,7 +34,7 @@ Template.cloud.helpers
     selected_tags: -> 
         # type = 'event'
         # console.log "selected_#{type}_tags"
-        selected_tags.list()
+        selected_tags.array()
 
 
 Template.cloud.events

@@ -27,7 +27,7 @@ Template.posts.events
 
     
 Template.post_item.helpers
-    tag_class: -> if @valueOf() in selected_tags.array() then 'primary' else 'basic'
+    tag_class: -> if @valueOf() in selected_tags.array() then 'secondary' else 'basic'
 
     can_edit: -> @author_id is Meteor.userId()
 
