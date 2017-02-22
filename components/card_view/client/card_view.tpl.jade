@@ -16,6 +16,10 @@
     //     +favorite
     if isInRole 'admin'
         .extra.content
+            a.ui.icon.basic.button(href="/view/#{_id}") 
+                i.unhide.icon
+            a.ui.icon.basic.button(href="/edit/#{_id}") 
+                i.pencil.icon
             i.red.configure.icon
             unless published
                 .ui.basic.red.tiny.label 

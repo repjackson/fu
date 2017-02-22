@@ -13,4 +13,4 @@ Template.delete_button.events
         }, ->
             doc = Docs.findOne FlowRouter.getParam('doc_id')
             Docs.remove doc._id, ->
-                FlowRouter.go "/#{doc.type}s"
+                FlowRouter.go "/admin/content"

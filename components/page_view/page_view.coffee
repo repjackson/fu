@@ -1,6 +1,3 @@
-FlowRouter.route '/edit/:doc_id', action: (params) ->
-    BlazeLayout.render 'layout',
-        main: 'edit'
 
 FlowRouter.route '/view/:doc_id', action: (params) ->
     BlazeLayout.render 'layout',
@@ -21,10 +18,7 @@ if Meteor.isClient
         item: ->
             Docs.findOne FlowRouter.getParam('doc_id')
     
-        # ecosystem_tags: ->
-        #     _.without(@tags, 'ecosystem') 
-    
-    
+
     
     Template.page_view.events
         'click .edit': ->

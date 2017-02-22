@@ -25,7 +25,7 @@ Template.users.events
     'click .remove_admin': ->
         self = @
         swal {
-            title: "Remove #{@emails[0].address} from Admins?"
+            title: "Remove from Admins?"
             # text: 'You will not be able to recover this imaginary file!'
             type: 'warning'
             animation: false
@@ -35,14 +35,14 @@ Template.users.events
             closeOnConfirm: false
         }, ->
             Roles.removeUsersFromRoles self._id, 'admin'
-            swal "Removed Admin Privilages from #{self.emails[0].address}", "",'success'
+            swal "Removed Admin Privilages", "",'success'
             return
 
 
     'click .make_admin': ->
         self = @
         swal {
-            title: "Make #{@emails[0].address} an Admin?"
+            title: "Make an Admin?"
             # text: 'You will not be able to recover this imaginary file!'
             type: 'warning'
             animation: false
@@ -52,7 +52,7 @@ Template.users.events
             closeOnConfirm: false
         }, ->
             Roles.addUsersToRoles self._id, 'admin'
-            swal "Made #{self.emails[0].address} an Admin", "",'success'
+            swal "Made an Admin", "",'success'
             return
 
     'click .remove_member': ->
