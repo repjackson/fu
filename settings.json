@@ -1,0 +1,25 @@
+{
+  "public": {
+    "stripe": {
+        "testPublishableKey": "pk_test_EeQ9GTKynLzNMq5hiTCkg3Ec",
+        "livePublishableKey": "pk_live_I5XDcgYoZQHko5epFyMr5IWT"
+      },
+    "analyticsSettings": {
+      "Google Analytics" : {"trackingId": "UA-93991317-1"}
+    }
+  },
+  "private": {
+    "stripe": {
+      "testSecretKey": "sk_test_VmLHoYbhDWLPgrVp5GoTd0AR",
+      "liveSecretKey": "sk_live_f0QHHkiCuftpYG49819oyrFr"
+    }
+  },
+  "cloudinary_key": "754714459692734",
+  "cloudinary_secret": "rPPXD3rZM_GCjODvh0T70XeDCSw",
+  "galaxy.meteor.com": {
+    "env": {
+      "MONGO_URL": "mongodb://facetadmin:Turnf34ragainst!@aws-us-east-1-portal.21.dblayer.com:10444/facet?ssl=true",
+      "ROOT_URL": "https://www.facet.cloud"
+    }
+  }
+}

@@ -1,24 +1,13 @@
 template(name='posts')
     .ui.container
-        // #blog_slider(style='width: 1000px; height: 500px;')
-        //     .ls-slide(data-ls='slidedelay: 2000;')
-        //         img.ls-bg(src="{{c.url 'impact_collage' effect='art:primavera'}}", alt='Slide background')
-        //         h1.ls-l.overlay-text.slider-text(style="top: 50%; text-size: 500%;") 
-        //             | Our Stories
-        // .ui.hidden.divider
-        .ui.stackable.divided.grid
-            .twelve.wide.column
-                h1.ui.horizontal.divider.header Recent Posts
-                // .ui.cards
-                .ui.relaxed.divided.items
-                    each posts
-                        +post_item
-            .four.wide.column
-                +cloud filter='post'
-                if isInRole 'admin'
-                    #add_post.ui.large.basic.fluid.button
-                        i.plus.icon
-                        |Add Post
+        if currentUser
+            #add_post.ui.large.basic.button
+                i.plus.icon
+                |Add Post
+        +cloud filter='post'
+        .ui.relaxed.divided.items
+            each posts
+                +post_item
 
 
 template(name='post_card')
@@ -53,25 +42,11 @@ template(name='post_item')
             img.ui.rounded.image(src="{{c.url image_id  width=175 height=175 crop='fill' gravity='face' }}")
         .content
             a.header(href="/post/view/#{_id}") #{title}
-            .meta
-                | Published #{publish_when}
             .description
-                p #{snippet}
-                a(href="/post/view/#{_id}") 
-                    |View More
+                | !{body}
+                a.ui.basic.icon.button(href="/post/view/#{_id}") 
                     i.arrow.right.icon
             .extra
                 i.tags.icon
                 each tags
                     .ui.compact.tiny.button.post_tag(class=tag_class) #{this}
-            if isInRole 'admin'
-                .extra
-                    i.red.configure.large.icon
-                    if published
-                        .ui.green.label Published
-                    else
-                        .ui.red.label Unpublished                        
-                    if featured
-                        .ui.green.label Featured
-                    else
-                        .ui.red.label Unfeatured

@@ -3,14 +3,11 @@
 Docs.before.insert (userId, doc)->
     doc.timestamp = Date.now()
     doc.author_id = Meteor.userId()
-    doc.points = 0
-    doc.down_voters = []
-    doc.up_voters = []
     return
 
 Docs.after.update ((userId, doc, fieldNames, modifier, options) ->
     doc.tag_count = doc.tags?.length
-    Meteor.call 'generate_authored_cloud'
+    # Meteor.call 'generate_authored_cloud'
 ), fetchPrevious: true
 
 
