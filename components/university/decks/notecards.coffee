@@ -26,5 +26,5 @@ if Meteor.isClient
         $('.shape').shape()
 
     Template.notecard_card.events
-        'click .flip': (e,t)->
-            t.$('.shape').shape('flip up')
+        'click .side': (e,t)->
+            t.$('.shape').shape('flip over')

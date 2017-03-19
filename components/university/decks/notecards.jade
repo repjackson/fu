@@ -18,13 +18,20 @@ template(name='notecard_card')
     .ui.shape
         .sides
             .active.side
-                .ui.card
+                .ui.link.card
                     .content
-                        .header
-                            |#{front}
+                        .ui.header #{front}
+                    .extra.content
+                        .ui.icon.green.button
+                            i.check.icon
+                        .ui.icon.red.button
+                            i.cancel.icon
             .side
-                .ui.card
+                .ui.link.card
                     .content
-                        .header
-                            | #{back}
-    .ui.button.flip flip card
+                        .ui.header  #{back}
+                    .extra.content
+                        .ui.icon.green.button
+                            i.check.icon
+                        .ui.icon.red.button
+                            i.cancel.icon

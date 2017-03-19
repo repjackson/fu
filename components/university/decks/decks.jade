@@ -51,10 +51,13 @@ template(name='deck_page')
             h2.ui.header #{subtitle}
             .ui.stackable.grid
                 .twelve.wide.column
-                    .ui.cards
-                        each notecards
-                            +notecard_card
+                    .ui.equal.width.grid
+                        .column
+                            each notecards
+                                +notecard_card
                 .four.wide.column
+                    +voting
+                    +favorite
                     .ui.horizontal.divider.header Tags
                     each tags
                         .ui.basic.label #{this}
@@ -65,7 +68,7 @@ template(name='deck_page')
                             |Admin
                         a(href="/deck/edit/#{_id}").ui.basic.fluid.button
                             i.pencil.icon
-                            |Edit
+                            |edit deck
                         a#add_card.ui.basic.fluid.button
                             i.plus.icon
                             |add card

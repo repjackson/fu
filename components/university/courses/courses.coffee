@@ -23,9 +23,6 @@ if Meteor.isClient
     Template.courses.onCreated ->
         @autorun -> Meteor.subscribe('selected_courses', selected_tags.array())
     
-    Template.courses.onRendered ->
-        $('#blog_slider').layerSlider
-            autoStart: true
     
     Template.course_page.onCreated ->
         @autorun -> Meteor.subscribe 'doc', FlowRouter.getParam('doc_id')

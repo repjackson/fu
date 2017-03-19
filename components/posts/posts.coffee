@@ -20,10 +20,6 @@ if Meteor.isClient
     Template.posts.onCreated ->
         @autorun -> Meteor.subscribe('selected_posts', selected_tags.array())
     
-    Template.posts.onRendered ->
-        $('#blog_slider').layerSlider
-            autoStart: true
-    
     
     Template.posts.helpers
         posts: -> 

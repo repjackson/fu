@@ -17,11 +17,6 @@ FlowRouter.route '/event/view/:doc_id', action: (params) ->
 
 
 if Meteor.isClient
-    Template.events.onRendered ->
-        $('#event_slider').layerSlider
-            autoStart: true
-     
-        
     Template.events.events
         'keydown #import_eventbrite': (e,t)->
             e.preventDefault

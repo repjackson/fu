@@ -14,10 +14,6 @@ if Meteor.isClient
     Template.products.onCreated ->
         @autorun -> Meteor.subscribe('selected_products', selected_tags.array())
     
-    Template.products.onRendered ->
-        $('#blog_slider').layerSlider
-            autoStart: true
-    
     
     Template.products.helpers
         products: -> 
