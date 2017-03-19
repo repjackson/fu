@@ -11,9 +11,7 @@ with product
                 |!{description}
             .five.wide.column
                 .ui.horizontal.divider.header Price $#{price}
-                .ui.fluid.basic.button
-                    i.large.add.to.cart.icon
-                    |Add to Cart
+                +add_to_cart
                 .ui.horizontal.divider.header Tags
                 each tags
                     .ui.basic.label #{this}

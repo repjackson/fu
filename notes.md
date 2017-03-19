@@ -5,6 +5,13 @@ db.docs.find({"authorId": {$exists: true}}).forEach(function(item)
 })
 
 
+db.docs.find({"type": {$exists: false}}).forEach(function(item)
+{
+        item.type = "post";
+        db.docs.save(item);
+})
+
+
 db.docs.update({
             }, {
                 $set: {
@@ -27,8 +34,10 @@ db.docs.find({}).forEach(
 )
 
 
-mongo --ssl --sslAllowInvalidCertificates aws-us-east-1-portal.21.dblayer.com:10444/facetdb -u <user> -p<password>
+"MONGO_URL": "mongodb://facetadmin:Turnf34ragainst!@aws-us-east-1-portal.21.dblayer.com:10444/facet?ssl=true",
 
+
+mongo --ssl --sslAllowInvalidCertificates aws-us-east-1-portal.21.dblayer.com:10444/facet -u facetadmin -pTurnf34ragainst!
 
 DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy --settings settings.json www.facet.enterprises
 

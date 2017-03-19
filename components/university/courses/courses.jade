@@ -1,0 +1,125 @@
+template(name='courses')
+    .ui.container
+        .ui.stackable.divided.grid
+            .twelve.wide.column
+                h1.ui.horizontal.divider.header courses
+                // .ui.cards
+                .ui.relaxed.divided.items
+                    each courses
+                        +course_item
+            .four.wide.column
+                +cloud filter='course'
+                if currentUser
+                    #add_course.ui.large.basic.fluid.button
+                        i.plus.icon
+                        |Add Course
+
+
+template(name='course_card')
+    .ui.fluid.card
+        .ui.centered.image
+            a(href="/course/view/#{_id}")
+                img(src="{{c.url image_id  height=300 crop='fill' gravity='face' }}")
+        .content
+            .header
+                a(href="/course/view/#{_id}")
+                    h2.ui.header #{title}
+            if publish_date
+                .meta
+                    | Published #{publish_when}
+            .description
+                |#{snippet}
+                // |!{description}
+        .content
+            each tags
+                .ui.compact.button.course_tag(class=tag_class) #{this}
+            if isInRole 'admin'
+                .edit_course.ui.primary.basic.right.floated.button
+                    i.pencil.icon
+                    |Edit course    
+        .content
+            +favorite
+
+            
+template(name='course_item')
+    .item
+        a.image(href="/course/view/#{_id}")
+            img.ui.rounded.image(src="{{c.url image_id  width=175 height=175 crop='fill' gravity='face' }}")
+        .content
+            a.header(href="/course/view/#{_id}") #{title}
+            .meta
+                | Published #{publish_when}
+            .description
+                p #{snippet}
+                a(href="/course/view/#{_id}") 
+                    |View More
+                    i.arrow.right.icon
+            .extra
+                i.tags.icon
+                each tags
+                    .ui.compact.tiny.button.course_tag(class=tag_class) #{this}
+            if isInRole 'admin'
+                .extra
+                    i.red.configure.large.icon
+                    if published
+                        .ui.green.label Published
+                    else
+                        .ui.red.label Unpublished                        
+                    if featured
+                        .ui.green.label Featured
+                    else
+                        .ui.red.label Unfeatured
+
+
+template(name='edit_course')
+    with course
+        .ui.container
+            .ui.center.aligned.header Edit Course
+            .ui.form
+                +edit_title
+                +edit_image
+                +edit_description
+                +edit_price
+                +edit_tags
+                +publish_button
+                if tags
+                    .ui.center.aligned.basic.segment
+                        a.ui.huge.green.button(href="/course/view/#{_id}") Save
+                        +delete_button
+
+
+template(name='course_page')
+    with course
+        .ui.container
+            a.ui.top.left.attached.basic.button(href="/courses")
+                i.arrow.left.icon
+                |University
+            if image_id
+                img.ui.centered.image(src="{{c.url image_id height=500 width=800 background='white' crop='lpad'}}")
+            h1.ui.header Course: #{title}
+            .ui.stackable.grid
+                .twelve.wide.column
+                    .ui.basic.segment
+                        |!{description}
+                .four.wide.column
+                    .ui.horizontal.divider.header Price: $#{price}
+                    +add_to_cart
+                    .ui.horizontal.divider.header Tags
+                    each tags
+                        .ui.basic.label #{this}
+                    +user_card
+                    if can_edit
+                        .ui.horizontal.divider.header
+                            i.large.red.configure.icon
+                            |Admin
+                        a(href="/course/edit/#{_id}").ui.basic.fluid.button
+                            i.pencil.icon
+                            |Edit
+                        if published
+                            .ui.green.label Published
+                        else
+                            .ui.red.label Unpublished                        
+                        if featured
+                            .ui.green.label Featured
+                        else
+                            .ui.red.label Unfeatured

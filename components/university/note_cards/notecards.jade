@@ -1,0 +1,126 @@
+template(name='notecards')
+    .ui.container
+        .ui.stackable.divided.grid
+            .twelve.wide.column
+                h1.ui.horizontal.divider.header notecards
+                // .ui.cards
+                .ui.relaxed.divided.items
+                    each notecards
+                        +notecard_item
+            .four.wide.column
+                +cloud filter='notecard'
+                if currentUser
+                    #add_notecard.ui.large.basic.fluid.button
+                        i.plus.icon
+                        |Add notecard
+
+template(name='edit_notecard')
+    with notecard
+        .ui.container
+            .ui.center.aligned.header Edit notecard
+            .ui.form
+                +edit_title
+                +edit_image
+                +edit_description
+                +edit_price
+                +edit_tags
+                +publish_button
+                if tags
+                    .ui.center.aligned.basic.segment
+                        a.ui.huge.green.button(href="/notecard/view/#{_id}") Save
+                        +delete_button
+
+
+
+template(name='notecard_card')
+    .ui.fluid.card
+        .ui.centered.image
+            a(href="/notecard/view/#{_id}")
+                img(src="{{c.url image_id  height=300 crop='fill' gravity='face' }}")
+        .content
+            .header
+                a(href="/notecard/view/#{_id}")
+                    h2.ui.header #{title}
+            if publish_date
+                .meta
+                    | Published #{publish_when}
+            .description
+                |#{snippet}
+                // |!{description}
+        .content
+            each tags
+                .ui.compact.button.notecard_tag(class=tag_class) #{this}
+            if isInRole 'admin'
+                .edit_notecard.ui.primary.basic.right.floated.button
+                    i.pencil.icon
+                    |Edit notecard    
+        .content
+            +favorite
+
+            
+template(name='notecard_item')
+    .item
+        a.image(href="/notecard/view/#{_id}")
+            img.ui.rounded.image(src="{{c.url image_id  width=175 height=175 crop='fill' gravity='face' }}")
+        .content
+            a.header(href="/notecard/view/#{_id}") #{title}
+            .meta
+                | Published #{publish_when}
+            .description
+                p #{snippet}
+                a(href="/notecard/view/#{_id}") 
+                    |View More
+                    i.arrow.right.icon
+            .extra
+                i.tags.icon
+                each tags
+                    .ui.compact.tiny.button.notecard_tag(class=tag_class) #{this}
+            if isInRole 'admin'
+                .extra
+                    i.red.configure.large.icon
+                    if published
+                        .ui.green.label Published
+                    else
+                        .ui.red.label Unpublished                        
+                    if featured
+                        .ui.green.label Featured
+                    else
+                        .ui.red.label Unfeatured
+
+
+
+template(name='notecard_page')
+    with notecard
+        .ui.container
+            a.ui.top.left.attached.basic.button(href="/notecards")
+                i.arrow.left.icon
+                |University
+            if image_id
+                img.ui.centered.image(src="{{c.url image_id height=500 width=800 background='white' crop='lpad'}}")
+            h1.ui.header notecard: #{title}
+            .ui.stackable.grid
+                .twelve.wide.column
+                    .ui.basic.segment
+                        |!{description}
+                .four.wide.column
+                    .ui.horizontal.divider.header Price: $#{price}
+                    +add_to_cart
+                    .ui.horizontal.divider.header Tags
+                    each tags
+                        .ui.basic.label #{this}
+                    +user_card
+                    if can_edit
+                        .ui.horizontal.divider.header
+                            i.large.red.configure.icon
+                            |Admin
+                        a(href="/notecard/edit/#{_id}").ui.basic.fluid.button
+                            i.pencil.icon
+                            |Edit
+                        if published
+                            .ui.green.label Published
+                        else
+                            .ui.red.label Unpublished                        
+                        if featured
+                            .ui.green.label Featured
+                        else
+                            .ui.red.label Unfeatured

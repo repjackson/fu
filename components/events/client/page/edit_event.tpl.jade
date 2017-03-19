@@ -14,9 +14,6 @@ with event
                     .ui.left.icon.input
                         i.calendar.icon
                         input#start_datetime(type='datetime-local' value=start_datetime)
-                // .field
-                //     label Start Time
-                //     input#start_time(type='time' value=start_time)
                 .field
                     label End Date/Time
                     .ui.left.icon.input
@@ -24,12 +21,12 @@ with event
                         input#end_datetime(type='datetime-local' value=end_datetime)
             +edit_location
             +edit_link
-            +add_to_calendar_link
             +edit_description
             +edit_tags
             +edit_featured
             +edit_reoccurring
             +publish_button
-            if title
-                #save_event.ui.large.green.button Save
-            +delete_button
+            .ui.center.aligned.basic.segment
+                if tags
+                    #save_event.ui.huge.green.button Save
+                +delete_button
