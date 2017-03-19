@@ -40,8 +40,28 @@ if Meteor.isClient
     
     
     
+    Template.edit_post.onCreated ->
+        self = @
+        self.autorun ->
+            self.subscribe 'doc', FlowRouter.getParam('doc_id')
     
-    
+    Template.edit_post.helpers
+        post: ->
+            Docs.findOne FlowRouter.getParam('doc_id')
+        
+            
+    Template.edit_post.events
+        'click #save_post': ->
+            title = $('#title').val()
+            publish_date = $('#publish_date').val()
+            description = $('#description').val()
+            Docs.update FlowRouter.getParam('doc_id'),
+                $set:
+                    title: title
+                    publish_date: publish_date
+                    description: description
+            FlowRouter.go "/post/view/#{@_id}"    
+        
         
     Template.post_item.helpers
         tag_class: -> if @valueOf() in selected_tags.array() then 'secondary' else 'basic'
@@ -58,6 +78,21 @@ if Meteor.isClient
         'click .edit_post': ->
             FlowRouter.go "/post/edit/#{@_id}"
 
+    Template.post_page.onCreated ->
+        self = @
+        self.autorun ->
+            self.subscribe 'doc', FlowRouter.getParam('doc_id')
+    
+    
+    
+    Template.post_page.helpers
+        post: ->
+            Docs.findOne FlowRouter.getParam('doc_id')
+    
+    
+    Template.post_page.events
+        'click .edit_post': ->
+            FlowRouter.go "/post/edit/#{@_id}"
 
 
 if Meteor.isServer

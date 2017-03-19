@@ -18,10 +18,6 @@ if Meteor.isClient
     Template.decks.onCreated ->
         @autorun -> Meteor.subscribe('selected_decks', selected_tags.array())
     
-    Template.decks.onRendered ->
-        $('#blog_slider').layerSlider
-            autoStart: true
-    
     
     Template.decks.helpers
         decks: -> 
@@ -41,22 +37,33 @@ if Meteor.isClient
         @autorun -> Meteor.subscribe 'doc', FlowRouter.getParam('doc_id')
     
     Template.edit_deck.helpers
-        deck: ->
-            Docs.findOne FlowRouter.getParam('doc_id')
+        deck: -> Docs.findOne FlowRouter.getParam('doc_id')
             
     Template.deck_page.onCreated ->
         @autorun -> Meteor.subscribe 'doc', FlowRouter.getParam('doc_id')
+        @autorun -> Meteor.subscribe 'deck_notecards', FlowRouter.getParam('doc_id')
     
     
     
     Template.deck_page.helpers
-        deck: ->
-            Docs.findOne FlowRouter.getParam('doc_id')
+        deck: -> Docs.findOne FlowRouter.getParam('doc_id')
     
-    
+        notecards: ->
+            Docs.find
+                type: 'notecard'
+                deck_id: FlowRouter.getParam('doc_id')
+        
     Template.deck_page.events
         'click .edit_deck': ->
             FlowRouter.go "/deck/edit/#{@_id}"
+    
+        'click #add_card': ->
+            new_id = Docs.insert
+                type: 'notecard'
+                deck_id: @_id
+            FlowRouter.go "/notecard/edit/#{new_id}"
+    
+        
     
         
     Template.deck_card_view.helpers
@@ -91,4 +98,7 @@ if Meteor.isServer
     Meteor.publish 'deck', (doc_id)->
         Docs.find doc_id
     
-        
+    Meteor.publish 'deck_notecards', (deck_id)->
+        Docs.find
+            type: 'notecard'
+            deck_id: deck_id

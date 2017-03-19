@@ -72,3 +72,56 @@ Meteor.publish 'tags', (selected_tags, filter)->
 
     self.ready()
 
+Meteor.methods
+    updatelocation: (doc_id, result)->
+        addresstags = (component.long_name for component in result.address_components)
+        loweredAddressTags = _.map(addresstags, (tag)->
+            tag.toLowerCase()
+            )
+
+        #console.log addresstags
+
+        doc = Docs.findOne doc_id
+        tagsWithoutAddress = _.difference(doc.tags, doc.addresstags)
+        tagsWithNew = _.union(tagsWithoutAddress, loweredAddressTags)
+
+        Docs.update doc_id,
+            $set:
+                tags: tagsWithNew
+                locationob: result
+                addresstags: loweredAddressTags
+
+
+    generate_upvoted_cloud: ->
+        upvoted_cloud = Docs.aggregate [
+            { $match: upvoters: $in: [Meteor.userId()] }
+            { $project: tags: 1 }
+            { $unwind: '$tags' }
+            { $group: _id: '$tags', count: $sum: 1 }
+            { $sort: count: -1, _id: 1 }
+            { $limit: 100 }
+            { $project: _id: 0, name: '$_id', count: 1 }
+            ]
+        upvoted_list = (tag.name for tag in upvoted_cloud)
+        Meteor.users.update Meteor.userId(),
+            $set:
+                upvoted_cloud: upvoted_cloud
+                upvoted_list: upvoted_list
+
+
+
+    generate_downvoted_cloud: ->
+        downvoted_cloud = Docs.aggregate [
+            { $match: downvoters: $in: [Meteor.userId()] }
+            { $project: tags: 1 }
+            { $unwind: '$tags' }
+            { $group: _id: '$tags', count: $sum: 1 }
+            { $sort: count: -1, _id: 1 }
+            { $limit: 100 }
+            { $project: _id: 0, name: '$_id', count: 1 }
+            ]
+        downvoted_list = (tag.name for tag in downvoted_cloud)
+        Meteor.users.update Meteor.userId(),
+            $set:
+                downvoted_cloud: downvoted_cloud
+                downvoted_list: downvoted_list

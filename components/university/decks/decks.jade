@@ -11,21 +11,21 @@ template(name='decks')
                 if currentUser
                     #add_deck.ui.large.basic.fluid.button
                         i.plus.icon
-                        |Add deck
+                        |add deck
 
 template(name='edit_deck')
     with deck
         .ui.container
             .ui.center.aligned.header edit deck
             .ui.form
-                +edit_title
-                +edit_subtitle
-                +edit_tags
-                +publish_button
+                +title
+                +subtitle
+                +tags
+                +published
                 if tags
                     .ui.center.aligned.basic.segment
                         a.ui.huge.green.button(href="/deck/view/#{_id}") Save
-                        +delete_button
+                        +delete
 
 
 
@@ -48,11 +48,12 @@ template(name='deck_page')
     with deck
         .ui.container
             h1.ui.header deck: #{title}
-            h2.ui.header deck: #{subtitle}
+            h2.ui.header #{subtitle}
             .ui.stackable.grid
                 .twelve.wide.column
-                    .ui.basic.segment
-                        |!{description}
+                    .ui.cards
+                        each notecards
+                            +notecard_card
                 .four.wide.column
                     .ui.horizontal.divider.header Tags
                     each tags
@@ -65,6 +66,9 @@ template(name='deck_page')
                         a(href="/deck/edit/#{_id}").ui.basic.fluid.button
                             i.pencil.icon
                             |Edit
+                        a#add_card.ui.basic.fluid.button
+                            i.plus.icon
+                            |add card
                         if published
                             .ui.green.label Published
                         else

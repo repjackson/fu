@@ -41,3 +41,4 @@ mizzao:autocomplete
 raix:handlebar-helpers
 froala:editor-reactive@=2.4.2
 http
+jquery

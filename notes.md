@@ -12,6 +12,11 @@ db.docs.find({"type": {$exists: false}}).forEach(function(item)
 })
 
 
+db.docs.update( { }, { $rename: { 'body': 'content' } }, { multi: true} )
+
+
+
+
 db.docs.update({
             }, {
                 $set: {
