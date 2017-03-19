@@ -1,13 +1,14 @@
 template(name='posts')
     .ui.container
         if currentUser
-            #add_post.ui.large.basic.button
+            #add_post.ui.large.icon.basic.button
                 i.plus.icon
-                |Add Post
         +cloud filter='post'
-        .ui.relaxed.divided.items
-            each posts
-                +post_item
+        .ui.hidden.divider
+        .ui.centered.grid
+            .ten.wide.column
+                each posts
+                    +post_item
 
 
 template(name='post_card')
@@ -37,16 +38,6 @@ template(name='post_card')
 
             
 template(name='post_item')
-    .item
-        a.image(href="/post/view/#{_id}")
-            img.ui.rounded.image(src="{{c.url image_id  width=175 height=175 crop='fill' gravity='face' }}")
-        .content
-            a.header(href="/post/view/#{_id}") #{title}
-            .description
-                | !{body}
-                a.ui.basic.icon.button(href="/post/view/#{_id}") 
-                    i.arrow.right.icon
-            .extra
-                i.tags.icon
-                each tags
-                    .ui.compact.tiny.button.post_tag(class=tag_class) #{this}
+    | !{body}
+    a.ui.basic.icon.button(href="/post/view/#{_id}") 
+        i.arrow.right.icon

@@ -1,0 +1,49 @@
+template(name='title')
+    .field
+        label Title
+        input#title(type='text' placeholder='Title' value=title)
+
+template(name='subtitle')
+    .field
+        label Subtitle
+        input#subtitle(type='text' value=subtitle)
+
+
+template(name='tags')
+    .field
+        label Tags
+        each tags
+            .ui.basic.button.doc_tag
+                i.minus.icon
+                |#{this}
+        .ui.left.icon.four.wide.input
+            i.add.icon
+            input#add_tag(type='text' placeholder='Add Tag' maxlength='50')
+
+
+template(name='price')
+    .field
+        label Price
+        input#price(type='number' min='0' val=price)
+
+template(name='link')
+    .field
+        label Link (include http://)
+        .ui.left.icon.input
+            i.linkify.icon
+            input#link(type='text' value=url)
+
+
+template(name='name')
+    .field
+        label Name
+        .ui.input
+            input#name(type='text' value=name)
+
+
+template(name='type')
+    .field
+        label Type
+        .ui.left.icon.input
+            i.red.configure.icon
+            input#type(type='text' value=type)
