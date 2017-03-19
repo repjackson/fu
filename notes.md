@@ -27,37 +27,13 @@ db.docs.find({}).forEach(
 )
 
 
-<!--autocomplete add tag to doc-->
-<!--bookmarks-->
-<!--cancel edit option-->
-<!--shareable address-->
-<!--me button-->
-
-logan version
-<!--generate cloud after update-->
-matched users
-take in filter
-find all users with tag in tag cloud
-from that set find all users with matching tags in tag list
-filter tags 
-
-todo
--tags on register
--active location
-
-
-meet the people you want to know
-should be fun
-be undeniable
-
-
-
 mongo --ssl --sslAllowInvalidCertificates aws-us-east-1-portal.21.dblayer.com:10444/facetdb -u <user> -p<password>
 
 
-ih customer workflow
-    check in with card/guest checkin
-    view human menu at kiosk, see picture, say hi to person
-    
-    
-DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy --settings settings.json facet.cloud
+DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy --settings settings.json www.facet.enterprises
+
+
+notes
+    any kind of app, build examples of everything
+    service marketplace, anyone can make money
+    learn shit, prove it, add service, build business

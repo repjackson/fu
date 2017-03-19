@@ -1,12 +1,5 @@
 
 
-Accounts.ui.config
-    passwordSignupFields: 'USERNAME_ONLY'
-
-Accounts.ui.config
-    dropdownClasses: 'simple'
-    
-
 $.cloudinary.config
     cloud_name:"facet"
 

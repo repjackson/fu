@@ -1,9 +1,9 @@
 if Meteor.isClient
-    Template.user_blurb.onCreated ->
+    Template.user_card.onCreated ->
         @autorun -> 
             Meteor.subscribe('person', Template.currentData().author_id)
     
-    Template.user_blurb.helpers
+    Template.user_card.helpers
         person: -> 
             Meteor.users.findOne( _id: Template.currentData().author_id )
 

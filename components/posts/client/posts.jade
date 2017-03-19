@@ -15,18 +15,10 @@ template(name='posts')
                         +post_item
             .four.wide.column
                 +cloud filter='post'
-                #add_post.ui.large.basic.fluid.button
-                    i.plus.icon
-                    |Add Post
-                // if isInRole 'admin'
-                //     h2.impact-header 
-                //         i.red.configure.icon
-                //         |Admin
-                //     #add_post.ui.compact.basic.fluid.button
-                //         i.large.icons
-                //             i.sticky.note.outline.icon
-                //             i.green.plus.corner.icon
-                //         |Add Post
+                if isInRole 'admin'
+                    #add_post.ui.large.basic.fluid.button
+                        i.plus.icon
+                        |Add Post
 
 
 template(name='post_card')

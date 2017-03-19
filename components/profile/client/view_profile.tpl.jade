@@ -36,5 +36,6 @@ with person
                 .ui.basic.label #{this}
         .ui.padded.basic.segment {{nl2br profile.bio}}
         if isInRole 'admin'
-            a#edit_profile.ui.basic.blue.button(href="/account/profile/edit/#{_id}")
+            a#edit_profile.ui.basic.button(href="/account/profile/edit/#{_id}")
+                i.pencil.icon
                 |Edit Profile

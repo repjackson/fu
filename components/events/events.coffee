@@ -116,7 +116,6 @@ if Meteor.isServer
     Meteor.publish 'featured_events', ->
         Docs.find  {       
             featured: true
-            # tags: $in: ['academy']
             type: 'event'
             }, 
             sort: start_date: -1
@@ -166,37 +165,6 @@ if Meteor.isServer
     
     Meteor.publish 'all_events', ->
         Docs.find type: 'event'
-    
-    Meteor.publish 'event_tags', (selected_event_tags)->
-        self = @
-        match = {}
-        # selected_event_tags.push 'academy'
-        if selected_event_tags.length > 0 then match.tags = $all: selected_event_tags
-        match.type = 'event'
-        
-        # if not @userId or not Roles.userIsInRole(@userId, ['admin'])
-        #     match.published = true
-        
-    
-    
-        cloud = Docs.aggregate [
-            { $match: match }
-            { $project: "tags": 1 }
-            { $unwind: "$tags" }
-            { $group: _id: "$tags", count: $sum: 1 }
-            { $match: _id: $nin: selected_event_tags }
-            { $sort: count: -1, _id: 1 }
-            { $limit: 20 }
-            { $project: _id: 0, name: '$_id', count: 1 }
-            ]
-    
-        cloud.forEach (tag, i) ->
-            self.added 'event_tags', Random.id(),
-                name: tag.name
-                count: tag.count
-                index: i
-    
-        self.ready()
     
     
     

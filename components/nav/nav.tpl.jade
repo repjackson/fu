@@ -1,19 +1,32 @@
-.ui.inverted.stackable.menu
+.ui.inverted.borderless.large.stackable.menu
     .ui.container
         a.header.icon.item(href='/' class="{{isActivePath '/'}}")
-            h1.facet_black F
-        a.item(href='/services' class="{{isActivePath '/services'}}") Services
-        // a.item(href='/team' class="{{isActivePath '/team'}}") Team
-        a.item(href='/events' class="{{isActivePath '/events'}}") Events
-        // a.item(href='/clients' class="{{isActivePath '/clients'}}") Events
-        a.item(href='/posts' class="{{isActivePath '/posts'}}") Blog
-        .right.menu 
-            a.item(href='/admin/content' class="{{isActivePath '/admin/'}}")
-                i.configure.icon
-                | Admin
-            a.item(href='/messages' class="{{isActivePath '/messages'}}")
-                i.mail.icon
+            h1.facet_black FE
+        a.icon.item(href='/events' class="{{isActivePath '/events'}}")
+            i.large.calendar.outline.icon
+        a.icon.item(href='/posts' class="{{isActivePath '/posts'}}")
+            i.large.newspaper.icon
+        a.icon.disabled.item(href='/university' class="{{isActivePath '/university'}}")
+            i.large.university.icon
+        a.icon.disabled.item(href='/conversations' class="{{isActivePath '/conversations'}}")
+            i.large.comments.outline.icon
+        a.icon.disabled.item(href='/ideas' class="{{isActivePath '/ideas'}}")
+            i.large.idea.icon
+        // a.icon.item(href='/dashboard' class="{{isActivePath '/dashboard'}}")
+        //     i.large.dashboard.icon
+        a.icon.item(href='/products' class="{{isActivePath '/products'}}")
+            i.large.shopping.cart.icon
+        // a.icon.item(href='/karma' class="{{isActivePath '/karma'}}")
+        //     i.large.trophy.icon
+        a.icon.item(href='/people' class="{{isActivePath '/people'}}")
+            i.users.icon
+        .right.menu
+            if isInRole 'admin'
+                a.icon.item(href='/admin/content' class="{{isActivePath '/admin/'}}")
+                    i.configure.icon
             if currentUser
+                a.item(href='/messages' class="{{isActivePath '/messages'}}")
+                    i.mail.icon
                 a.item(href="/account/profile/edit" class="{{isActivePath '/account/profile/edit'}}")
                     if profile_doc.image_id
                         img.ui.avatar.image(src="{{c.url currentUser.image_id width=50 height=50 gravity='face' crop='fill'}}")
@@ -25,8 +38,6 @@
                         | Profile
                 a#logout.ui.item(href='#') 
                     i.sign.out.icon
-                    |Sign Out
             else
                 a.ui.item(href='/sign-in') 
                     i.sign.in.icon
-                    |Sign In

@@ -1,0 +1,31 @@
+with product
+    .ui.container
+        a.ui.top.left.attached.basic.button(href="/products")
+            i.arrow.left.icon
+            |Marketplace
+        if image_id
+            img.ui.centered.image(src="{{c.url image_id height=500 width=800 background='white' crop='lpad'}}")
+        .ui.stackable.divided.grid
+            .eleven.wide.column
+                h1.ui.center.aligned.header #{title}
+                |!{description}
+            .five.wide.column
+                .ui.horizontal.divider.header Price $#{price}
+                .ui.fluid.basic.button
+                    i.large.add.to.cart.icon
+                    |Add to Cart
+                .ui.horizontal.divider.header Tags
+                each tags
+                    .ui.basic.label #{this}
+                +user_card
+                if can_edit
+                    .ui.horizontal.divider.header 
+                        i.red.configure.icon
+                        |Admin
+                    a.ui.basic.fluid.button(href="/product/edit/#{_id}")
+                        i.pencil.icon
+                        |Edit
+                    if published
+                        .ui.green.fluid.label Published
+                    else
+                        .ui.red.fluid.label Unpublished

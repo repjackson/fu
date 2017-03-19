@@ -1,10 +1,10 @@
 template(name='events')
     .ui.container
-        #event_slider(style='width: 1500px; height: 500px;')
-            .ls-slide(data-ls='slidedelay: 2000;')
-                img.ls-bg(src="{{c.url 'vinetta' width=1500 height=500 crop='fill' gravity='north' effect='art:primavera'}}", alt='Slide background')
-                h1.ls-l.overlay-text.slider-text(style="top: 50%; text-size: 300%;") 
-                    | Events
+        // #event_slider(style='width: 1500px; height: 500px;')
+        //     .ls-slide(data-ls='slidedelay: 2000;')
+        //         img.ls-bg(src="{{c.url 'vinetta' width=1500 height=500 crop='fill' gravity='north' effect='art:primavera'}}", alt='Slide background')
+        //         h1.ls-l.overlay-text.slider-text(style="top: 50%; text-size: 300%;") 
+        //             | Community is Critical, here are events that interest us
         .ui.basic.segment
             .ui.stackable.grid
                 .twelve.wide.column
@@ -15,9 +15,8 @@ template(name='events')
                         +admin_events
                 .four.wide.column
                     +cloud filter='event'
-                    // +google_calendar
                     if isInRole 'admin'
-                        h2.impact-header 
+                        h2.ui.horizontal.divider.header 
                             i.red.configure.icon
                             |Admin
                         .ui.fluid.input
@@ -31,7 +30,7 @@ template(name='events')
 
 template(name='reoccurring_events')
     if reoccurring_events.count
-        h2.impact-header Reoccurring Events
+        h2.ui.horizontal.divider.header Reoccurring Events
         .ui.centered.stackable.three.cards
             each reoccurring_events
                 +event_card
@@ -39,7 +38,7 @@ template(name='reoccurring_events')
 
 template(name='upcoming_events')
     if upcoming_events.count
-        h2.impact-header Upcoming Events
+        h2.ui.horizontal.divider.header Upcoming Events
         .ui.centered.stackable.three.cards
             each upcoming_events
                 +event_card
@@ -47,7 +46,7 @@ template(name='upcoming_events')
 
 template(name='past_events')
     if past_events.count
-        h2.impact-header Past Events
+        h2.ui.horizontal.divider.header Past Events
         .ui.centered.stackable.three.cards
             each past_events
                 +event_card
@@ -55,7 +54,7 @@ template(name='past_events')
 
 template(name='admin_events')
     if admin_events.count
-        h2.impact-header 
+        h2.ui.horizontal.divider.header 
             i.red.configure.icon
             |Unpublished Events
         .ui.centered.stackable.three.cards
