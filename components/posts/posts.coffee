@@ -28,6 +28,9 @@ if Meteor.isClient
                 },
                 limit: 1
                 
+        one_doc: ->
+            Docs.find().count() is 1
+                
     Template.posts.events
         'click #add_post': ->
             id = Docs.insert

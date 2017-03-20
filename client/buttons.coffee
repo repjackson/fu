@@ -31,20 +31,21 @@ Template.published.events
 
 Template.delete.events
     'click #delete': ->
+        type = Template.currentData().type
         swal {
-            title: 'Delete?'
+            title: 'delete?'
             # text: 'Confirm delete?'
             type: 'error'
             animation: false
             showCancelButton: true
             closeOnConfirm: true
-            cancelButtonText: 'Cancel'
-            confirmButtonText: 'Delete'
+            cancelButtonText: 'cancel'
+            confirmButtonText: 'delete'
             confirmButtonColor: '#da5347'
         }, ->
             doc = Docs.findOne FlowRouter.getParam('doc_id')
             Docs.remove doc._id, ->
-                FlowRouter.go "/admin/content"
+                FlowRouter.go "/#{type}s"
 
 Template.favorite.helpers
     favorite_count: -> Template.parentData(0).favorite_count
@@ -69,3 +70,11 @@ Template.featured.events
         Docs.update FlowRouter.getParam('doc_id'),
             $set: featured: false
 
+
+Template.add.events        
+    'click #add': ->
+        filter = Template.currentData().filter
+        id = Docs.insert
+            type: filter
+        FlowRouter.go "/#{filter}/edit/#{id}"
+    

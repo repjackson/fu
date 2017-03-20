@@ -3,7 +3,8 @@
 
 FlowRouter.notFound =
     action: ->
-        FlowRouter.go '/'
+        BlazeLayout.render 'layout', 
+            main: 'not_found'
         
         
 Meteor.methods

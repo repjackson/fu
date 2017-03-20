@@ -1,3 +1,8 @@
+
+FlowRouter.route '/notecards', action: (params) ->
+    BlazeLayout.render 'layout',
+        main: 'notecards'
+
 FlowRouter.route '/notecard/edit/:doc_id', action: (params) ->
     BlazeLayout.render 'layout',
         main: 'edit_notecard'

@@ -5,10 +5,9 @@ template(name='posts')
                 i.plus.icon
         +cloud filter='post'
         .ui.hidden.divider
-        .ui.centered.grid
-            .ten.wide.column
-                each posts
-                    +post_item
+        if one_doc
+            each posts
+                +post_item
 
 
 template(name='post_card')
@@ -56,7 +55,6 @@ template(name='edit_post')
                 +content
                 +tags
                 +published
-                +featured
                 if title
                     #save_post.ui.green.button 
                         i.check.icon

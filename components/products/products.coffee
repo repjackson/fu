@@ -24,16 +24,37 @@ if Meteor.isClient
                     publish_date: -1
                 limit: 5
                 
-    Template.products.events
-        'click #add_product': ->
-            id = Docs.insert
-                type: 'product'
-            FlowRouter.go "/product/edit/#{id}"
+    
+    Template.edit_product.onCreated ->
+        @autorun -> Meteor.subscribe 'doc', FlowRouter.getParam('doc_id')
+    
+    Template.edit_product.helpers
+        product: ->
+            Docs.findOne FlowRouter.getParam('doc_id')
+        
+    Template.product_page.onCreated ->
+        @autorun -> Meteor.subscribe 'doc', FlowRouter.getParam('doc_id')
     
     
     
+    Template.product_page.helpers
+        product: ->
+            Docs.findOne FlowRouter.getParam('doc_id')
     
     
+    Template.product_page.events
+        'click .edit_product': ->
+            FlowRouter.go "/product/edit/#{@_id}"
+
+        
+        
+        
+            
+    Template.edit_product.events
+        'click #save_product': ->
+            FlowRouter.go "/product/view/#{@_id}"
+        
+        
         
     Template.product_item.helpers
         tag_class: -> if @valueOf() in selected_tags.array() then 'primary' else 'basic'

@@ -21,7 +21,7 @@ if Meteor.isClient
         course: -> Docs.findOne FlowRouter.getParam('doc_id')
         
     Template.courses.onCreated ->
-        @autorun -> Meteor.subscribe('selected_courses', selected_tags.array())
+        @autorun -> Meteor.subscribe('docs', selected_tags.array(), 'course', 10)
     
     
     Template.course_page.onCreated ->
@@ -30,8 +30,7 @@ if Meteor.isClient
     
     
     Template.course_page.helpers
-        course: ->
-            Docs.findOne FlowRouter.getParam('doc_id')
+        course: -> Docs.findOne FlowRouter.getParam('doc_id')
     
     
     Template.course_page.events
@@ -47,14 +46,6 @@ if Meteor.isClient
                 type: 'course'
                 }
                 
-    Template.courses.events
-        'click #add_course': ->
-            id = Docs.insert
-                type: 'course'
-            FlowRouter.go "/course/edit/#{id}"
-    
-    
-    
     
     
         
@@ -73,21 +64,3 @@ if Meteor.isClient
         'click .edit_course': ->
             FlowRouter.go "/course/edit/#{@_id}"
 
-
-if Meteor.isServer
-    Meteor.publish 'selected_courses', (selected_course_tags)->
-        
-        self = @
-        match = {}
-        if selected_course_tags.length > 0 then match.tags = $all: selected_course_tags
-        match.type = 'course'
-        # if not @userId or not Roles.userIsInRole(@userId, ['admin'])
-        #     match.published = true
-        
-    
-        Docs.find match
-    
-    Meteor.publish 'course', (doc_id)->
-        Docs.find doc_id
-    
-        

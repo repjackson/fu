@@ -1,9 +1,9 @@
 
-Template.content.onCreated ->
+Template.all_content.onCreated ->
     @autorun -> Meteor.subscribe 'all_docs'
 
 
-Template.content.helpers
+Template.all_content.helpers
     docs: -> Docs.find()
 
 

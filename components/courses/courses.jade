@@ -1,6 +1,6 @@
 template(name='courses')
     .ui.container
-        .ui.stackable.divided.grid
+        .ui.stackable.grid
             .twelve.wide.column
                 h1.ui.horizontal.divider.header courses
                 // .ui.cards
@@ -10,10 +10,7 @@ template(name='courses')
             .four.wide.column
                 +cloud filter='course'
                 if currentUser
-                    #add_course.ui.large.basic.fluid.button
-                        i.plus.icon
-                        |Add Course
-
+                    +add filter='course'
 
 template(name='course_card')
     .ui.fluid.card
@@ -76,16 +73,16 @@ template(name='edit_course')
         .ui.container
             .ui.center.aligned.header Edit Course
             .ui.form
-                +edit_title
-                +edit_image
-                +edit_description
-                +edit_price
-                +edit_tags
+                +title
+                +image
+                +content
+                +price
+                +tags
                 +published
-                if tags
-                    .ui.center.aligned.basic.segment
+                .ui.center.aligned.basic.segment
+                    if tags
                         a.ui.huge.green.button(href="/course/view/#{_id}") Save
-                        +delete_button
+                +delete type='course'
 
 
 template(name='course_page')
