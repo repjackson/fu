@@ -1,0 +1,68 @@
+template(name='modules')
+    .ui.container
+        .ui.stackable.grid
+            .twelve.wide.column
+                h1.ui.horizontal.divider.header modules
+                // .ui.cards
+                .ui.relaxed.divided.items
+                    each modules
+                        +module_item
+            .four.wide.column
+                if currentUser
+                    #add_module.ui.large.basic.fluid.button
+                        i.plus.icon
+                        |add module
+
+
+            
+template(name='module_item')
+    .item
+        .content
+            a.header(href="/module/view/#{_id}") #{title}
+            .description
+                a(href="/module/view/#{_id}") 
+                    |view
+                    i.arrow.right.icon
+            .extra
+                i.tags.icon
+                each tags
+                    .ui.compact.tiny.button.module_tag(class=tag_class) #{this}
+            if is_teacher
+                .extra
+                    i.red.configure.large.icon
+
+
+template(name='edit_module')
+    with module
+        .ui.container
+            .ui.center.aligned.header edit module
+            .ui.form
+                .field
+                    label title
+                    input#title(type='text' value=title)
+                .field
+                    label number
+                    input#number(type='text' value=number)
+            .ui.center.aligned.basic.segment
+                    #save_module.ui.huge.green.button save
+                    #delete_module.ui.red.button delete
+
+template(name='module_admin_page')
+    .ui.container
+        with module_ob
+            h1.ui.header #{number}: #{title}
+            h2.ui.header course: #{course.title}
+            .ui.stackable.grid
+                .twelve.wide.column
+                    #add_question.ui.basic.button
+                        i.plus.icon
+                        |add question
+                    .ui.cards
+                        each questions
+                            +question_item
+                        
+                .four.wide.column
+                    each tags
+                        .ui.basic.label #{this}
+                    if can_edit
+                        a(href="/module/edit/#{_id}").ui.basic.fluid.button edit

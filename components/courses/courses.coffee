@@ -67,21 +67,21 @@ if Meteor.isClient
     
     Template.course_page.onCreated ->
         @autorun -> Meteor.subscribe 'course', FlowRouter.getParam('course_id')
-        @autorun -> Meteor.subscribe 'course_sections', FlowRouter.getParam('course_id')
+        @autorun -> Meteor.subscribe 'course_modules', FlowRouter.getParam('course_id')
     
     Template.course_page.helpers
         course_ob: -> 
             Courses.findOne()
     
-        sections: ->
-            Sections.find
+        modules: ->
+            Modules.find
                 course_id: FlowRouter.getParam('course_id')
         
     Template.course_page.events
-        'click #add_section': ->
-            id = Sections.insert
+        'click #add_module': ->
+            id = Modules.insert
                 course_id: FlowRouter.getParam('course_id')
-            FlowRouter.go "/section/edit/#{id}"
+            FlowRouter.go "/module/edit/#{id}"
     
     Template.courses.helpers
         courses: -> 
@@ -102,8 +102,8 @@ if Meteor.isServer
         remove: (userId, doc) -> doc.teacher_id is userId or Roles.userIsInRole(userId, 'admin')
 
 
-    Meteor.publish 'course_sections', (course_id)->
-        Sections.find 
+    Meteor.publish 'course_modules', (course_id)->
+        Modules.find 
             course_id: course_id
     
     Meteor.publish 'courses', ()->

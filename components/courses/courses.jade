@@ -60,12 +60,13 @@ template(name='course_page')
             h1.ui.header #{title}
             .ui.stackable.grid
                 .twelve.wide.column
-                    #add_section.ui.basic.button
+                    #add_module.ui.basic.button
                         i.plus.icon
-                        |add section
-                    .ui.cards
-                        each sections
-                            +section_card
+                        |add module
+                    .ui.header modules    
+                    .ui.divided.items
+                        each modules
+                            +module_item
                         
                 .four.wide.column
                     each tags

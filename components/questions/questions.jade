@@ -1,0 +1,73 @@
+template(name='questions')
+    .ui.container
+        h1.ui.horizontal.divider.header questions
+        .ui.centered.cards
+            each questions
+                +question_card
+
+
+            
+template(name='question_item')
+    .item
+        .content
+            a.header(href="/question/view/#{_id}") #{text}
+            .ui.list
+                each answers
+                    .item
+                        .header #{text}
+                        if right
+                            .ui.green.basic.label right
+                        else
+                            .ui.red.basic.label wrong
+            .extra.content
+                a(href="/question/view/#{_id}").ui.basic.button view
+                a(href="/question/edit/#{_id}").ui.basic.button edit
+                if complete
+                    i.green.check.icon
+
+
+template(name='edit_question')
+    with question
+        .ui.container
+            .ui.center.aligned.header edit question
+            .ui.form
+                .field
+                    label text
+                    .froala-container
+                        +froalaReactive getFEContext
+                .field
+                    .ui.header 
+                        |answers
+                    #add_answer.ui.basic.icon.button
+                        i.plus.icon
+                    .ui.divided.list
+                        each answers
+                            .item
+                                +answer
+                .ui.center.aligned.basic.segment
+                    #save_question.ui.huge.green.button save
+                    #delete_question.ui.red.button delete
+                        
+                        
+template(name='answer')
+    .ui.left.action.input
+        if right
+            .make_wrong.ui.green.button right
+        else
+            .make_right.ui.red.button wrong
+        input.answer(type='text' value=answer)
+
+template(name='question_page')
+    with question
+        .ui.container
+            h1.ui.header #{title}
+            |{{nl2br info}}
+            +quiz
+            if can_edit
+                a(href="/question/edit/#{_id}").ui.basic.fluid.button edit
+
+
+template(name='quiz')
+    .ui.header #{question}
+    each answers
+        .ui.fluid.basic.button #{answer}

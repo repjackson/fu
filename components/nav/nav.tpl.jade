@@ -1,11 +1,9 @@
 .ui.inverted.borderless.large.stackable.menu
     .ui.container
         a.icon.item(href='/' class="{{isActivePath '/'}}")
-            .facet_black FU
+            // .facet_black facet university
+            i.large.home.icon
         .right.menu
-            if isInRole 'admin'
-                a.icon.item(href='/admin/content' class="{{isActivePath '/admin/'}}")
-                    i.configure.icon
             if currentUser
                 a.item(href="/account/profile/edit" class="{{isActivePath '/account/profile/edit'}}")
                     if currentUser.profile.image_id
@@ -16,8 +14,6 @@
                         | #{currentUser.profile.name}
                     else
                         | Profile
-                a#logout.ui.item(href='#') 
-                    i.sign.out.icon
+                a#logout.ui.item(href='#') leave
             else
-                a.ui.item(href='/sign-in') 
-                    i.sign.in.icon
+                a.ui.item(href='/sign-in') enter
