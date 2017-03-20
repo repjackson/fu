@@ -1,54 +1,3 @@
-template(name='title')
-    .field
-        label title
-        input#title(type='text' value=title)
-
-template(name='subtitle')
-    .field
-        label subtitle
-        input#subtitle(type='text' value=subtitle)
-
-
-template(name='tags')
-    .field
-        label tags
-        each tags
-            .ui.basic.button.doc_tag
-                i.minus.icon
-                |#{this}
-        .ui.left.icon.four.wide.input
-            i.add.icon
-            input#add_tag(type='text' placeholder='add...' maxlength='50')
-
-
-template(name='link')
-    .field
-        label link (include http://)
-        .ui.left.icon.input
-            i.linkify.icon
-            input#link(type='text' value=url)
-
-
-template(name='page_name')
-    .field
-        label page name
-        .ui.input
-            input#name(type='text' value=name)
-
-
-template(name='type')
-    .field
-        label type
-        .ui.left.icon.input
-            i.red.configure.icon
-            input#type(type='text' value=type)
-
-template(name='location')
-    .field
-        label location
-        .ui.left.icon.input
-            i.compass.icon
-            input#location(type='text' value=location)
 
 template(name='content')
     // .field
@@ -79,24 +28,4 @@ template(name='content')
     //     cloudinary.openUploadWidget({ cloud_name: 'facet', upload_preset: 'rodonu5a'},
     //     function(error, result) { console.log(error, result) });
     //     }, false);
-    
-    
-template(name='image')
-    // .ui.header Custom Image
-    if image_id
-        .field
-            label image
-            .ui.large.image
-                img(src="{{c.url image_id width=500 crop='fit'}}")
-                a#remove_photo.ui.top.left.attached.link.basic.label remove
-                .ui.bottom.right.attached.basic.label image Id: #{image_id}
-    else
-        .fields
-            .field
-                label upload image
-                input(type='file' name='upload_picture' accept='image/*')
-            if isInRole 'admin'
-                .field
-                    label cloudinary id
-                    input#input_image_id(type='text')
     

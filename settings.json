@@ -19,7 +19,7 @@
   "galaxy.meteor.com": {
     "env": {
       "MONGO_URL": "mongodb://facetadmin:Turnf34ragainst!@aws-us-east-1-portal.21.dblayer.com:10444/facet?ssl=true",
-      "ROOT_URL": "https://www.facet.cloud"
+      "ROOT_URL": "https://www.facet.university"
     }
   }
 }

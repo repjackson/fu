@@ -8,88 +8,68 @@ template(name='courses')
                     each courses
                         +course_item
             .four.wide.column
-                +cloud filter='course'
+                +course_cloud
                 if currentUser
-                    +add filter='course'
+                    #add_course.ui.large.basic.fluid.button
+                        i.plus.icon
+                        |add course
 
 
             
 template(name='course_item')
     .item
-        a.image(href="/course/view/#{_id}")
-            img.ui.rounded.image(src="{{c.url image_id  width=175 height=175 crop='fill' gravity='face' }}")
         .content
             a.header(href="/course/view/#{_id}") #{title}
-            .meta
-                | Published #{publish_when}
             .description
-                p #{snippet}
                 a(href="/course/view/#{_id}") 
-                    |View More
+                    |view
                     i.arrow.right.icon
             .extra
                 i.tags.icon
                 each tags
                     .ui.compact.tiny.button.course_tag(class=tag_class) #{this}
-            if isInRole 'admin'
+            if is_teacher
                 .extra
                     i.red.configure.large.icon
-                    if published
-                        .ui.green.label Published
-                    else
-                        .ui.red.label Unpublished                        
-                    if featured
-                        .ui.green.label Featured
-                    else
-                        .ui.red.label Unfeatured
 
 
 template(name='edit_course')
     with course
         .ui.container
-            .ui.center.aligned.header Edit Course
+            .ui.center.aligned.header edit course
             .ui.form
-                +title
-                +subtitle
-                +tags
-                +published
+                .field
+                    label title
+                    input#title(type='text' value=title)
+                .field
+                    label tags
+                    each tags
+                        .ui.basic.button.doc_tag
+                            i.minus.icon
+                            |#{this}
+                    .ui.left.icon.four.wide.input
+                        i.add.icon
+                        input#add_tag(type='text' placeholder='add...' maxlength='50')
                 .ui.center.aligned.basic.segment
                     if tags
-                        a.ui.huge.green.button(href="/course/view/#{_id}") Save
-                +delete type='course'
-
+                        #save_course.ui.huge.green.button save
+                    #delete_course.ui.red.button delete
 
 template(name='course_page')
-    with course
-        .ui.container
+    .ui.container
+        with course_ob
             h1.ui.header #{title}
-            h3.ui.header #{subtitle}
             .ui.stackable.grid
                 .twelve.wide.column
+                    #add_section.ui.basic.button
+                        i.plus.icon
+                        |add section
                     .ui.cards
                         each sections
-                            .ui.card
-                                .content
-                                    .header #{title}
-                                    
+                            +section_card
                         
                 .four.wide.column
-                    .ui.horizontal.divider.header Tags
                     each tags
                         .ui.basic.label #{this}
-                    +user_card
                     if can_edit
-                        .ui.horizontal.divider.header
-                            i.large.red.configure.icon
-                            |Admin
-                        a(href="/course/edit/#{_id}").ui.basic.fluid.button
-                            i.pencil.icon
-                            |Edit
-                        if published
-                            .ui.green.label Published
-                        else
-                            .ui.red.label Unpublished                        
-                        if featured
-                            .ui.green.label Featured
-                        else
-                            .ui.red.label Unfeatured
+                        a(href="/course/edit/#{_id}").ui.basic.fluid.button edit

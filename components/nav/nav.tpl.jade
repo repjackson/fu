@@ -2,8 +2,6 @@
     .ui.container
         a.icon.item(href='/' class="{{isActivePath '/'}}")
             .facet_black FU
-        a.icon.item(href='/courses' class="{{isActivePath '/courses'}}")
-            i.large.university.icon
         .right.menu
             if isInRole 'admin'
                 a.icon.item(href='/admin/content' class="{{isActivePath '/admin/'}}")

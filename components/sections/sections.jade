@@ -1,0 +1,65 @@
+template(name='sections')
+    .ui.container
+        h1.ui.horizontal.divider.header sections
+        .ui.centered.cards
+            each sections
+                +section_card
+
+
+            
+template(name='section_card')
+    .card
+        .content
+            a.header(href="/section/view/#{_id}") #{title}
+            .extra.content
+                a(href="/section/view/#{_id}").ui.basic.button view
+                a(href="/section/edit/#{_id}").ui.basic.button edit
+                if complete
+                    i.green.check.icon
+
+
+template(name='edit_section')
+    with section
+        .ui.container
+            .ui.center.aligned.header edit section
+            .ui.form
+                .field
+                    label title
+                    input#title(type='text' value=title)
+                .field
+                    label number
+                    input#number(type='text' value=number)
+                .field
+                    label info
+                    textarea#info(rows='3') #{info}
+                .field
+                    label question
+                    input#question(type='text' value=question)
+                .fields
+                    #add_choice.ui.basic.button add choice
+                    each choices
+                        .ui.segment
+                            .make_correct.ui.basic.icon.button
+                                if is_correct
+                                    i.green.check.icon
+                                else
+                                    i.red.remove.icon
+                            input#question(type='text' value=question)
+                .ui.center.aligned.basic.segment
+                    #save_section.ui.huge.green.button save
+                    #delete_section.ui.red.button delete
+
+template(name='section_page')
+    with section
+        .ui.container
+            h1.ui.header #{title}
+            |{{nl2br info}}
+            +quiz
+            if can_edit
+                a(href="/section/edit/#{_id}").ui.basic.fluid.button edit
+
+
+template(name='quiz')
+    .ui.header #{question}
+    each choices
+        .ui.fluid.basic.button #{this}

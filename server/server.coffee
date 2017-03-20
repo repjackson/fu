@@ -19,33 +19,14 @@ Meteor.users.allow
 
 
 
-Courses.allow
-    insert: (userId, doc) -> doc.teacher_id is userId
-    update: (userId, doc) -> doc.teacher_id is userId or Roles.userIsInRole(userId, 'admin')
-    remove: (userId, doc) -> doc.teacher_id is userId or Roles.userIsInRole(userId, 'admin')
 
 
-
-
-Meteor.publish 'courses', (selected_tags, filter, limit)->
-
+Meteor.publish 'tags', (selected_tags)->
     self = @
     match = {}
     if selected_tags.length > 0 then match.tags = $all: selected_tags
-    Courses.find match
 
-Meteor.publish 'course', (id)->
-    Courses.find id
-
-
-
-Meteor.publish 'tags', (selected_tags, filter)->
-    self = @
-    match = {}
-    if selected_tags.length > 0 then match.tags = $all: selected_tags
-    if filter then match.type = filter
-
-    cloud = Docs.aggregate [
+    cloud = Courses.aggregate [
         { $match: match }
         { $project: "tags": 1 }
         { $unwind: "$tags" }
