@@ -1,5 +1,6 @@
 
 @Sections = new Meteor.Collection 'sections'
+@Choices = new Meteor.Collection 'choices'
 
 Sections.before.insert (userId, doc)->
     doc.teacher_id = Meteor.userId()
@@ -25,24 +26,9 @@ if Meteor.isClient
     
     Template.edit_section.onCreated ->
         @autorun -> Meteor.subscribe 'section', FlowRouter.getParam('section_id')
+        @autorun -> Meteor.subscribe 'section_choices', FlowRouter.getParam('section_id')
     
     Template.edit_section.events
-        'keydown #add_tag': (e,t)->
-            if e.which is 13
-                section_id = FlowRouter.getParam('section_id')
-                tag = $('#add_tag').val().toLowerCase().trim()
-                if tag.length > 0
-                    Sections.update section_id,
-                        $addToSet: tags: tag
-                    $('#add_tag').val('')
-    
-        'click .doc_tag': (e,t)->
-            tag = @valueOf()
-            Sections.update FlowRouter.getParam('section_id'),
-                $pull: tags: tag
-            $('#add_tag').val(tag)
-
-    
         'click #save_section': ->
             title = $('#title').val()
             info = $('#info').val()
@@ -64,9 +50,24 @@ if Meteor.isClient
                 Sections.remove FlowRouter.getParam('section_id')
                 FlowRouter.go '/sections'
     
+        'click #add_choice': ->
+            Choices.insert
+                section_id: @_id
+    
+    Template.question_choice.events
+        'keyup .answer': (e,t)->
+            e.preventDefault()
+            answer = t.$('.answer').val().toLowerCase().trim()
+            if e.which is 13 #enter
+                Choices.update @_id,
+                    $set: answer: answer
     
     Template.edit_section.helpers
         section: -> Sections.findOne FlowRouter.getParam('section_id')
+        
+        choices: ->
+            Choices.find()
+        
         
     Template.sections.onCreated ->
         @autorun -> Meteor.subscribe('sections')
@@ -83,10 +84,15 @@ if Meteor.isClient
     
     
     Template.sections.helpers
-        sections: -> 
-            Sections.find {}
-                
-
+        sections: ->  Sections.find {}
+            
+            
+    Template.quiz.onCreated ->
+        @autorun -> Meteor.subscribe('section_choices', FlowRouter.getParam('section_id'))
+            
+    Template.quiz.helpers
+        choices: ->
+            Choices.find()
 
     Template.sections.events
         'click #add_section': ->
@@ -100,7 +106,15 @@ if Meteor.isServer
         insert: (userId, doc) -> userId
         update: (userId, doc) -> userId or Roles.userIsInRole(userId, 'admin')
         remove: (userId, doc) -> userId or Roles.userIsInRole(userId, 'admin')
+    
+    Choices.allow
+        insert: (userId, doc) -> userId
+        update: (userId, doc) -> userId or Roles.userIsInRole(userId, 'admin')
+        remove: (userId, doc) -> userId or Roles.userIsInRole(userId, 'admin')
 
     Meteor.publish 'section', (id)->
         Sections.find id
 
+    Meteor.publish 'section_choices', (section_id)->
+        Choices.find
+            section_id: section_id

@@ -35,19 +35,23 @@ template(name='edit_section')
                 .field
                     label question
                     input#question(type='text' value=question)
-                .fields
-                    #add_choice.ui.basic.button add choice
+                .field
+                    #add_choice.ui.basic.button + add choice
                     each choices
-                        .ui.segment
-                            .make_correct.ui.basic.icon.button
-                                if is_correct
-                                    i.green.check.icon
-                                else
-                                    i.red.remove.icon
-                            input#question(type='text' value=question)
+                        +question_choice
                 .ui.center.aligned.basic.segment
                     #save_section.ui.huge.green.button save
                     #delete_section.ui.red.button delete
+                        
+                        
+template(name='question_choice')
+    .ui.segment
+        .make_correct.ui.basic.icon.button
+            if is_correct
+                i.green.check.icon
+            else
+                i.red.remove.icon
+        input.answer(type='text' value=answer)
 
 template(name='section_page')
     with section
@@ -62,4 +66,4 @@ template(name='section_page')
 template(name='quiz')
     .ui.header #{question}
     each choices
-        .ui.fluid.basic.button #{this}
+        .ui.fluid.basic.button #{answer}

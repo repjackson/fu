@@ -60,7 +60,7 @@ if Meteor.isClient
         course: -> Courses.findOne FlowRouter.getParam('course_id')
         
     Template.courses.onCreated ->
-        @autorun -> Meteor.subscribe('courses', selected_tags.array())
+        @autorun -> Meteor.subscribe('courses')
     
     
     
@@ -106,11 +106,10 @@ if Meteor.isServer
         Sections.find 
             course_id: course_id
     
-    Meteor.publish 'courses', (selected_tags, filter, limit)->
+    Meteor.publish 'courses', ()->
     
         self = @
         match = {}
-        if selected_tags.length > 0 then match.tags = $all: selected_tags
         Courses.find match
     
     Meteor.publish 'course', (id)->
