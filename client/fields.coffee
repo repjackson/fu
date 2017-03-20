@@ -22,16 +22,6 @@ Template.tags.events
         $('#add_tag').val(tag)
 
 
-
-Template.price.events
-    'change #price': ->
-        doc_id = FlowRouter.getParam('doc_id')
-        price = parseInt $('#price').val()
-
-        Docs.update doc_id,
-            $set: price: price
-            
-            
             
 Template.title.events
     'blur #title': ->

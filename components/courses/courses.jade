@@ -12,30 +12,6 @@ template(name='courses')
                 if currentUser
                     +add filter='course'
 
-template(name='course_card')
-    .ui.fluid.card
-        .ui.centered.image
-            a(href="/course/view/#{_id}")
-                img(src="{{c.url image_id  height=300 crop='fill' gravity='face' }}")
-        .content
-            .header
-                a(href="/course/view/#{_id}")
-                    h2.ui.header #{title}
-            if publish_date
-                .meta
-                    | Published #{publish_when}
-            .description
-                |#{snippet}
-                // |!{description}
-        .content
-            each tags
-                .ui.compact.button.course_tag(class=tag_class) #{this}
-            if isInRole 'admin'
-                .edit_course.ui.primary.basic.right.floated.button
-                    i.pencil.icon
-                    |Edit course    
-        .content
-            +favorite
 
             
 template(name='course_item')
@@ -74,9 +50,7 @@ template(name='edit_course')
             .ui.center.aligned.header Edit Course
             .ui.form
                 +title
-                +image
-                +content
-                +price
+                +subtitle
                 +tags
                 +published
                 .ui.center.aligned.basic.segment
@@ -88,19 +62,18 @@ template(name='edit_course')
 template(name='course_page')
     with course
         .ui.container
-            a.ui.top.left.attached.basic.button(href="/courses")
-                i.arrow.left.icon
-                |University
-            if image_id
-                img.ui.centered.image(src="{{c.url image_id height=500 width=800 background='white' crop='lpad'}}")
-            h1.ui.header Course: #{title}
+            h1.ui.header #{title}
+            h3.ui.header #{subtitle}
             .ui.stackable.grid
                 .twelve.wide.column
-                    .ui.basic.segment
-                        |!{description}
+                    .ui.cards
+                        each sections
+                            .ui.card
+                                .content
+                                    .header #{title}
+                                    
+                        
                 .four.wide.column
-                    .ui.horizontal.divider.header Price: $#{price}
-                    +add_to_cart
                     .ui.horizontal.divider.header Tags
                     each tags
                         .ui.basic.label #{this}

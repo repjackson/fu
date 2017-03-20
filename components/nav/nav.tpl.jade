@@ -1,30 +1,14 @@
 .ui.inverted.borderless.large.stackable.menu
     .ui.container
         a.icon.item(href='/' class="{{isActivePath '/'}}")
-            i.large.sticky.note.outline.icon
-        a.icon.item(href='/events' class="{{isActivePath '/events'}}")
-            i.large.calendar.outline.icon
-        a.icon.item(href='/posts' class="{{isActivePath '/posts'}}")
-            i.large.newspaper.icon
+            .facet_black FU
         a.icon.item(href='/courses' class="{{isActivePath '/courses'}}")
             i.large.university.icon
-        a.icon.item(href='/notecards' class="{{isActivePath '/notecards'}}")
-            i.large.clone.icon
-        a.icon.disabled.item(href='/conversations' class="{{isActivePath '/conversations'}}")
-            i.large.comments.outline.icon
-        a.icon.disabled.item(href='/ideas' class="{{isActivePath '/ideas'}}")
-            i.large.idea.icon
-        a.icon.item(href='/products' class="{{isActivePath '/products'}}")
-            i.large.shopping.cart.icon
-        a.icon.disabled.item(href='/people' class="{{isActivePath '/people'}}")
-            i.users.icon
         .right.menu
             if isInRole 'admin'
                 a.icon.item(href='/admin/content' class="{{isActivePath '/admin/'}}")
                     i.configure.icon
             if currentUser
-                a.item(href='/messages' class="{{isActivePath '/messages'}}")
-                    i.mail.icon
                 a.item(href="/account/profile/edit" class="{{isActivePath '/account/profile/edit'}}")
                     if currentUser.profile.image_id
                         img.ui.avatar.image(src="{{c.url currentUser.profile.image_id width=50 height=50 gravity='face' crop='fill'}}")

@@ -19,28 +19,23 @@ Meteor.users.allow
 
 
 
-Docs.allow
-    insert: (userId, doc) -> doc.author_id is userId
-    update: (userId, doc) -> doc.author_id is userId or Roles.userIsInRole(userId, 'admin')
-    remove: (userId, doc) -> doc.author_id is userId or Roles.userIsInRole(userId, 'admin')
+Courses.allow
+    insert: (userId, doc) -> doc.teacher_id is userId
+    update: (userId, doc) -> doc.teacher_id is userId or Roles.userIsInRole(userId, 'admin')
+    remove: (userId, doc) -> doc.teacher_id is userId or Roles.userIsInRole(userId, 'admin')
 
 
 
 
-Meteor.publish 'docs', (selected_tags, filter, limit)->
+Meteor.publish 'courses', (selected_tags, filter, limit)->
 
     self = @
     match = {}
     if selected_tags.length > 0 then match.tags = $all: selected_tags
-    if filter then match.type = filter
-    if limit 
-        Docs.find match,
-            limit: limit
-    else
-        Docs.find match
+    Courses.find match
 
-Meteor.publish 'doc', (id)->
-    Docs.find id
+Meteor.publish 'course', (id)->
+    Courses.find id
 
 
 
@@ -71,57 +66,3 @@ Meteor.publish 'tags', (selected_tags, filter)->
             index: i
 
     self.ready()
-
-Meteor.methods
-    updatelocation: (doc_id, result)->
-        addresstags = (component.long_name for component in result.address_components)
-        loweredAddressTags = _.map(addresstags, (tag)->
-            tag.toLowerCase()
-            )
-
-        #console.log addresstags
-
-        doc = Docs.findOne doc_id
-        tagsWithoutAddress = _.difference(doc.tags, doc.addresstags)
-        tagsWithNew = _.union(tagsWithoutAddress, loweredAddressTags)
-
-        Docs.update doc_id,
-            $set:
-                tags: tagsWithNew
-                locationob: result
-                addresstags: loweredAddressTags
-
-
-    generate_upvoted_cloud: ->
-        upvoted_cloud = Docs.aggregate [
-            { $match: upvoters: $in: [Meteor.userId()] }
-            { $project: tags: 1 }
-            { $unwind: '$tags' }
-            { $group: _id: '$tags', count: $sum: 1 }
-            { $sort: count: -1, _id: 1 }
-            { $limit: 100 }
-            { $project: _id: 0, name: '$_id', count: 1 }
-            ]
-        upvoted_list = (tag.name for tag in upvoted_cloud)
-        Meteor.users.update Meteor.userId(),
-            $set:
-                upvoted_cloud: upvoted_cloud
-                upvoted_list: upvoted_list
-
-
-
-    generate_downvoted_cloud: ->
-        downvoted_cloud = Docs.aggregate [
-            { $match: downvoters: $in: [Meteor.userId()] }
-            { $project: tags: 1 }
-            { $unwind: '$tags' }
-            { $group: _id: '$tags', count: $sum: 1 }
-            { $sort: count: -1, _id: 1 }
-            { $limit: 100 }
-            { $project: _id: 0, name: '$_id', count: 1 }
-            ]
-        downvoted_list = (tag.name for tag in downvoted_cloud)
-        Meteor.users.update Meteor.userId(),
-            $set:
-                downvoted_cloud: downvoted_cloud
-                downvoted_list: downvoted_list
