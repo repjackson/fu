@@ -21,6 +21,7 @@ FlowRouter.route '/question/view/:question_id', action: (params) ->
 
 Questions.helpers
     module: -> Modules.findOne @module_id
+    answers: -> Answers.find question_id: @_id
 
 Answers.helpers
     question: -> Questions.findOne @question_id
@@ -60,12 +61,15 @@ if Meteor.isClient
                 question_id: @_id
     
     Template.answer.events
-        'keyup .answer': (e,t)->
-            e.preventDefault()
+        'blur .answer': (e,t)->
             answer = t.$('.answer').val().toLowerCase().trim()
-            if e.which is 13 #enter
-                Answers.update @_id,
-                    $set: answer: answer
+            Answers.update @_id,
+                $set: answer: answer
+                    
+        'blur .response': (e,t)->
+            response = t.$('.response').val().toLowerCase().trim()
+            Answers.update @_id,
+                $set: response: response
                     
         'click .make_right': ->
             Answers.update @_id,
@@ -120,29 +124,46 @@ if Meteor.isClient
 
         
     Template.questions.onCreated ->
-        @autorun -> Meteor.subscribe('questions')
+        @autorun -> Meteor.subscribe 'questions'
+    
+    
+    
     
     
     Template.question_page.onCreated ->
         @autorun -> Meteor.subscribe 'question', FlowRouter.getParam('question_id')
-    
-    
-    
+        @answered = new ReactiveVar false 
+        @answer_id = new ReactiveVar '' 
+
     Template.question_page.helpers
-        question: -> Questions.findOne FlowRouter.getParam('question_id')
+        question: -> Questions.findOne {}
+        answers: -> Answers.find()
+        is_answered: -> Template.instance().answered.get()
+        answer_class: -> 
+            button_class = ''
+            if Template.instance().answer_id.get() is @_id
+                button_class += 'green'
+            if Template.instance().answered.get() is true
+                button_class += ' disabled'
+            # else button_class += 'basic'
+            console.log button_class
+            button_class
+            
+        selected_answer: ->
+            Template.instance().answer_id.get() is @_id and Template.instance().answered.get() is true
     
-    
-    
+    Template.question_page.events
+        'click .pick_answer': (e,t)->
+            if @right then Meteor.users.update Meteor.userId(), $addToSet: right_questions: @_id
+            else Meteor.users.update Meteor.userId(), $addToSet: wrong_questions: @_id
+            
+            t.answered.set true
+            t.answer_id.set @_id
+
     Template.questions.helpers
         questions: ->  Questions.find {}
             
             
-    Template.quiz.onCreated ->
-        @autorun -> Meteor.subscribe('answers', FlowRouter.getParam('question_id'))
-            
-    Template.quiz.helpers
-        answers: ->
-            Answers.find()
 
     Template.questions.events
         'click #add_question': ->
@@ -163,9 +184,40 @@ if Meteor.isServer
         update: (userId, doc) -> userId or Roles.userIsInRole(userId, 'admin')
         remove: (userId, doc) -> userId or Roles.userIsInRole(userId, 'admin')
 
-    Meteor.publish 'question', (id)->
-        Questions.find id
-
     Meteor.publish 'answers', (question_id)->
         Answers.find
             question_id: question_id
+
+
+    publishComposite 'module_questions', (module_id)->
+        {
+            find: ->
+                Questions.find {},
+                    sort: number: -1
+                    # limit: 10
+            children: [
+                { find: (question) ->
+                    Answers.find { question_id: question._id }
+                }
+                {
+                    find: (question) ->
+                        Modules.find { _id: question.module_id } 
+                }
+            ]
+        }
+
+    publishComposite 'question', (question_id)->
+        {
+            find: ->
+                Questions.find _id:question_id
+            children: [
+                { find: (question) ->
+                    Answers.find { question_id: question._id }
+                }
+                {
+                    find: (question) ->
+                        Modules.find { _id: question.module_id } 
+                }
+            ]
+        }
+

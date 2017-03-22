@@ -102,15 +102,25 @@ if Meteor.isServer
         remove: (userId, doc) -> doc.teacher_id is userId or Roles.userIsInRole(userId, 'admin')
 
 
-    Meteor.publish 'course_modules', (course_id)->
-        Modules.find 
-            course_id: course_id
+    # publishComposite 'course_modules', (course_id)->
+    #     {
+    #         find: ->
+    #             Modules.find {course_id: course_id},
+    #                 sort: number: -1
+    #                 # limit: 10
+    #         # children: [
+    #         #     { find: (question) ->
+    #         #         Answers.find { question_id: question._id }
+    #         #     }
+    #         #     {
+    #         #         find: (question) ->
+    #         #             Modules.find { _id: question.module_id } 
+    #         #     }
+    #         # ]
+    #     }
     
     Meteor.publish 'courses', ()->
-    
-        self = @
-        match = {}
-        Courses.find match
+        Courses.find {}
     
     Meteor.publish 'course', (id)->
         Courses.find id

@@ -37,3 +37,5 @@ useraccounts:semantic-ui
 raix:handlebar-helpers
 froala:editor-reactive@=2.4.2
 jquery
+reywood:publish-composite
+reactive-var

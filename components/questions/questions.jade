@@ -8,13 +8,14 @@ template(name='questions')
 
             
 template(name='question_item')
-    .item
+    .ui.segment
         .content
-            a.header(href="/question/view/#{_id}") #{text}
+            .description
+                |!{text}
             .ui.list
                 each answers
                     .item
-                        .header #{text}
+                        .header #{answer}
                         if right
                             .ui.green.basic.label right
                         else
@@ -28,46 +29,57 @@ template(name='question_item')
 
 template(name='edit_question')
     with question
-        .ui.container
+        .ui.text.container
             .ui.center.aligned.header edit question
             .ui.form
                 .field
-                    label text
                     .froala-container
                         +froalaReactive getFEContext
-                .field
-                    .ui.header 
-                        |answers
-                    #add_answer.ui.basic.icon.button
-                        i.plus.icon
-                    .ui.divided.list
-                        each answers
-                            .item
-                                +answer
-                .ui.center.aligned.basic.segment
-                    #save_question.ui.huge.green.button save
-                    #delete_question.ui.red.button delete
+            .ui.form
+                .ui.header 
+                    |answers
+                #add_answer.ui.basic.icon.button
+                    i.plus.icon
+                each answers
+                    .ui.segment
+                        +answer
+            .ui.center.aligned.basic.segment
+                #save_question.ui.huge.green.button save
+                #delete_question.ui.red.button delete
                         
                         
 template(name='answer')
-    .ui.left.action.input
-        if right
-            .make_wrong.ui.green.button right
-        else
-            .make_right.ui.red.button wrong
-        input.answer(type='text' value=answer)
+    .field
+        .ui.left.action.input
+            if right
+                .make_wrong.ui.green.button right
+            else
+                .make_right.ui.red.button wrong
+            input.answer(type='text' value=answer)
+    .field
+        label response
+        input.response(type='text' value=response)
+        
 
 template(name='question_page')
     with question
-        .ui.container
-            h1.ui.header #{title}
-            |{{nl2br info}}
-            +quiz
-            if can_edit
-                a(href="/question/edit/#{_id}").ui.basic.fluid.button edit
+        .ui.text.container
+            a.ui.basic.button(href="/module/admin_view/#{module_id}") 
+                i.left.arrow.icon
+                |back to #{module.title} admin
+            .ui.basic.padded.segment
+                .ui.header 
+                    |!{text}
+                    if can_edit
+                        a(href="/question/edit/#{_id}").ui.basic.button edit
+                each answers
+                    .pick_answer.ui.big.basic.button(class=answer_class) #{answer}
+                    if selected_answer
+                        .ui.header #{response}
+                    .ui.hidden.divider
+                if is_answered
+                    .ui.basic.button
+                        |next
+                        i.right.arrow.icon
 
 
-template(name='quiz')
-    .ui.header #{question}
-    each answers
-        .ui.fluid.basic.button #{answer}

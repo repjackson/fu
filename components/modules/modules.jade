@@ -18,10 +18,13 @@ template(name='modules')
 template(name='module_item')
     .item
         .content
-            a.header(href="/module/view/#{_id}") #{title}
+            a.header #{title}
             .description
-                a(href="/module/view/#{_id}") 
-                    |view
+                a.ui.basic.button(href="/module/admin_view/#{_id}") 
+                    |admin
+                    i.arrow.right.icon
+                a.ui.basic.button(href="/module/study/#{_id}") 
+                    |study
                     i.arrow.right.icon
             .extra
                 i.tags.icon
@@ -57,12 +60,49 @@ template(name='module_admin_page')
                     #add_question.ui.basic.button
                         i.plus.icon
                         |add question
-                    .ui.cards
+                    .ui.items
                         each questions
                             +question_item
-                        
                 .four.wide.column
                     each tags
                         .ui.basic.label #{this}
                     if can_edit
                         a(href="/module/edit/#{_id}").ui.basic.fluid.button edit
+                    a(href="/module/study/#{_id}").ui.large.fluid.basic.button study
+
+template(name='study_module')
+    .ui.text.container
+        a.ui.basic.button(href="/module/admin_view/#{module._id}") 
+            i.left.arrow.icon
+            |back to #{module.title} admin
+        unless answered_all
+            each unanswered_questions
+                +unanswered_question
+        else
+            +study_results
+            
+template(name='study_results')
+    .ui.header right #{right_count}
+    .ui.header wrong #{wrong_count}
+    if wrong_count
+        #do_over.ui.basic.button do over
+    else
+        #congrats.ui.basic.button congrats
+        #do_over.ui.basic.button do over anyway
+            
+            
+template(name='unanswered_question')
+    .ui.basic.padded.segment
+        .ui.header 
+            |!{text}
+            if can_edit
+                a(href="/question/edit/#{_id}").ui.basic.button edit
+        each answers
+            .pick_answer.ui.big.basic.button(class=answer_class) #{answer}
+            if selected_answer
+                strong #{response}
+            .ui.hidden.divider
+        if is_answered
+            #next.ui.basic.button
+                |next
+                i.right.arrow.icon
