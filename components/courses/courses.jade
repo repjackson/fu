@@ -64,9 +64,9 @@ template(name='course_page')
                         i.plus.icon
                         |add module
                     .ui.header modules    
-                    .ui.divided.items
+                    .ui.cards
                         each modules
-                            +module_item
+                            +module_card
                         
                 .four.wide.column
                     each tags

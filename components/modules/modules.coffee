@@ -95,11 +95,11 @@ if Meteor.isClient
             t.answer_id.set @_id
 
         'click #next': (e,t)->
-            # console.log 'answered question', t.answer_id.get()
-            # console.log 'answered right', t.answered_right.get()
-            # console.log 'answered wrong', t.answered_wrong.get()
+            console.log 'answered question', t.answer_id.get()
+            console.log 'answered right', t.answered_right.get()
+            console.log 'answered wrong', t.answered_wrong.get()
             
-            if @right 
+            if t.answered_right.get()
                 Meteor.users.update Meteor.userId(), $addToSet: right_questions: @_id
                 Questions.update @_id, $addToSet: right_answerers: Meteor.userId()
             else 
@@ -119,9 +119,11 @@ if Meteor.isClient
             answered_module_questions = 
                 Questions.find(
                     {answerers: $in: [Meteor.userId()]}).count()
-            module_question_count = Questions.find({module_id: FlowRouter.getParam('module_id')).count()
-            console.log 'answered questions', answered_questions
-            if answered_questions is 0 then return false
+            module_question_count = Questions.find({module_id: FlowRouter.getParam('module_id')}).count()
+            console.log 'answered questions', answered_module_questions
+            console.log 'total questions', module_question_count
+            difference = module_question_count - answered_module_questions
+            if difference is 0 then  return true
     
     Template.study_results.helpers
         right_count: -> 
@@ -138,6 +140,10 @@ if Meteor.isClient
     Template.study_results.events
         'click #do_over': ->
             Meteor.call 'do_over', FlowRouter.getParam('module_id')
+    
+        'click #congrats': ->
+            Meteor.users.update Meteor.userId(), $addToSet: completed_modules: FlowRouter.getParam('module_id')
+            FlowRouter.go '/courses'
     
     
     Template.module_admin_page.onCreated ->
@@ -162,7 +168,9 @@ if Meteor.isClient
         modules: -> 
             Modules.find {}
                 
-    
+    Template.module_card.helpers
+        is_completed: ->
+            @_id in Meteor.user().completed_modules
 
     Template.modules.events
         'click #add_module': ->
@@ -180,12 +188,15 @@ if Meteor.isServer
             )
             Questions.update(
                 {},
-                {$pull: right_answerers: Meteor.userId()}
+                {$pull: right_answerers: Meteor.userId()},
+                multi: true
             )
             Questions.update(
                 {},
-                {$pull: answerers: Meteor.userId()}
+                {$pull: answerers: Meteor.userId()},
+                multi: true
             )
+            return
     
     Modules.allow
         insert: (userId, doc) -> doc.teacher_id is userId

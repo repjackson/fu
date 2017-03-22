@@ -15,10 +15,12 @@ template(name='modules')
 
 
             
-template(name='module_item')
-    .item
+template(name='module_card')
+    .card
         .content
-            a.header #{title}
+            if is_completed
+                i.right.floated.green.check.large.icon
+            .header #{title}
             .description
                 a.ui.basic.button(href="/module/admin_view/#{_id}") 
                     |admin
@@ -26,13 +28,6 @@ template(name='module_item')
                 a.ui.basic.button(href="/module/study/#{_id}") 
                     |study
                     i.arrow.right.icon
-            .extra
-                i.tags.icon
-                each tags
-                    .ui.compact.tiny.button.module_tag(class=tag_class) #{this}
-            if is_teacher
-                .extra
-                    i.red.configure.large.icon
 
 
 template(name='edit_module')
@@ -53,6 +48,9 @@ template(name='edit_module')
 template(name='module_admin_page')
     .ui.container
         with module_ob
+            a(href="/course/view/#{course_id}").ui.basic.button
+                i.left.arrow.icon
+                |back to course
             h1.ui.header #{number}: #{title}
             h2.ui.header course: #{course.title}
             .ui.stackable.grid
@@ -87,7 +85,7 @@ template(name='study_results')
     if wrong_count
         #do_over.ui.basic.button do over
     else
-        #congrats.ui.basic.button congrats
+        #congrats.ui.basic.button congrats, back to course
         #do_over.ui.basic.button do over anyway
             
             
