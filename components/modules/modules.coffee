@@ -127,23 +127,27 @@ if Meteor.isClient
     
     Template.study_results.helpers
         right_count: -> 
-            Questions.find({
+            right_count = Questions.find({
                 module_id: FlowRouter.getParam('module_id')
                 right_answerers: $in: [Meteor.userId()]
                 }).count()
+            console.log 'right count', right_count
+            right_count
         wrong_count: -> 
-            Questions.find({
+            wrong_count = Questions.find({
                 module_id: FlowRouter.getParam('module_id')
                 wrong_answerers: $in: [Meteor.userId()]
                 }).count()
-
+            console.log 'wrong count', wrong_count
+            wrong_count
+            
     Template.study_results.events
         'click #do_over': ->
             Meteor.call 'do_over', FlowRouter.getParam('module_id')
     
         'click #congrats': ->
             Meteor.users.update Meteor.userId(), $addToSet: completed_modules: FlowRouter.getParam('module_id')
-            FlowRouter.go '/courses'
+            FlowRouter.go "/course/view/#{FlowRouter.getParam('module_id')}"
     
     
     Template.module_admin_page.onCreated ->

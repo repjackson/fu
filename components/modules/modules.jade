@@ -90,17 +90,20 @@ template(name='study_results')
             
             
 template(name='unanswered_question')
-    .ui.basic.padded.segment
-        .ui.header 
+    .ui.text.container
+        if can_edit
+            a(href="/question/edit/#{_id}").ui.basic.button 
+                i.configure.icon
+                |edit question
+        .ui.padded.segment
             |!{text}
-            if can_edit
-                a(href="/question/edit/#{_id}").ui.basic.button edit
-        each answers
-            .pick_answer.ui.big.basic.button(class=answer_class) #{answer}
-            if selected_answer
-                strong #{response}
-            .ui.hidden.divider
-        if is_answered
-            #next.ui.basic.button
-                |next
-                i.right.arrow.icon
+            .ui.divider
+            each answers
+                .pick_answer.ui.big.basic.button(class=answer_class) #{answer}
+                if selected_answer
+                    .ui.header #{response}
+                .ui.hidden.divider
+            if is_answered
+                #next.ui.basic.button
+                    |next
+                    i.right.arrow.icon

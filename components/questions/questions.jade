@@ -15,50 +15,54 @@ template(name='question_item')
             .ui.list
                 each answers
                     .item
-                        .header #{answer}
                         if right
                             .ui.green.basic.label right
                         else
                             .ui.red.basic.label wrong
+                        span #{answer}
             .extra.content
-                a(href="/question/view/#{_id}").ui.basic.button view
-                a(href="/question/edit/#{_id}").ui.basic.button edit
+                a(href="/question/view/#{_id}").ui.basic.button 
+                    i.right.arrow.icon
+                    |view
+                a(href="/question/edit/#{_id}").ui.basic.button 
+                    i.pencil.icon
+                    |edit
                 if complete
                     i.green.check.icon
 
 
 template(name='edit_question')
     with question
-        .ui.text.container
-            .ui.center.aligned.header edit question
-            .ui.form
-                .field
-                    .froala-container
-                        +froalaReactive getFEContext
-            .ui.form
-                .ui.header 
-                    |answers
-                #add_answer.ui.basic.icon.button
-                    i.plus.icon
-                each answers
-                    .ui.segment
-                        +answer
+        .ui.container
+            h1.ui.center.aligned.header edit question
+            .froala-container
+                +froalaReactive getFEContext
+            .ui.hidden.divider
+            h1.ui.header answers
+            #add_answer.ui.basic.icon.button
+                i.plus.icon
+            each answers
+                +answer
             .ui.center.aligned.basic.segment
                 #save_question.ui.huge.green.button save
                 #delete_question.ui.red.button delete
                         
                         
 template(name='answer')
-    .field
-        .ui.left.action.input
+    .ui.segment(class=answer_segment_class)
+        .ui.form
+            .field
+                label choice
+                input.answer(type='text' value=answer)
+            .field
+                label response
+                input.response(type='text' value=response)
             if right
                 .make_wrong.ui.green.button right
             else
                 .make_right.ui.red.button wrong
-            input.answer(type='text' value=answer)
-    .field
-        label response
-        input.response(type='text' value=response)
+            #remove_response.ui.red.basic.icon.small.button
+                i.remove.icon
         
 
 template(name='question_page')
@@ -67,11 +71,13 @@ template(name='question_page')
             a.ui.basic.button(href="/module/admin_view/#{module_id}") 
                 i.left.arrow.icon
                 |back to #{module.title} admin
-            .ui.basic.padded.segment
-                .ui.header 
-                    |!{text}
-                    if can_edit
-                        a(href="/question/edit/#{_id}").ui.basic.button edit
+            if can_edit
+                a(href="/question/edit/#{_id}").ui.basic.button 
+                    i.configure.icon
+                    |edit question
+            .ui.padded.segment
+                |!{text}
+                .ui.divider
                 each answers
                     .pick_answer.ui.big.basic.button(class=answer_class) #{answer}
                     if selected_answer

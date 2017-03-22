@@ -29,7 +29,6 @@ Answers.helpers
 
 
 if Meteor.isClient
-    
     Template.edit_question.onCreated ->
         @autorun -> Meteor.subscribe 'question', FlowRouter.getParam('question_id')
         @autorun -> Meteor.subscribe 'answers', FlowRouter.getParam('question_id')
@@ -60,6 +59,10 @@ if Meteor.isClient
             Answers.insert
                 question_id: @_id
     
+    Template.answer.helpers
+        answer_segment_class: ->
+            if @right then 'green' else 'red'
+    
     Template.answer.events
         'blur .answer': (e,t)->
             answer = t.$('.answer').val().toLowerCase().trim()
@@ -78,6 +81,11 @@ if Meteor.isClient
         'click .make_wrong': ->
             Answers.update @_id,
                 $set: right: false
+                
+        'click #remove_response': ->
+            if confirm 'remove answer?'
+                Answers.remove @_id
+        
     
     Template.edit_question.helpers
         question: -> Questions.findOne FlowRouter.getParam('question_id')
@@ -192,7 +200,7 @@ if Meteor.isServer
     publishComposite 'module_questions', (module_id)->
         {
             find: ->
-                Questions.find {},
+                Questions.find {module_id: module_id},
                     sort: number: -1
                     # limit: 10
             children: [
